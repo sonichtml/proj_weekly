@@ -1,3 +1,4 @@
+// Task all func
 (function(){
   //- 具体更新操作(未完成)
   function checkAndUpdate(){
