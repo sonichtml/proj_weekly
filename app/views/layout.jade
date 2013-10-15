@@ -21,16 +21,27 @@ html(lang="zh-CN")
               li
                 a(href='/export') 数据导出
               li
-                a(href='/setting') 系统设置
+                a(href='/setting-project') 系统设置
           .user-info
+            if user
+            //- p= user.nick
+              a.navbar-link(href="http://km.oa.com/user/#{user.rtx}") #{user.rtx}(#{user.nick})
+
             .user-info-avatar
-              img(src='http://ossweb-img.qq.com/images/igame/web2012/cntimg/head40.jpg', width='36', height='36', alt='sonichuang')
+              img(src='http://r.hrc.oa.com/photo/100/#{user.rtx}.png', width='36', height='36', alt='sonichuang')
             .user-info-txt
               p
-                | sonichuang [
-                a(href='#') 退出
+                //- | 
+                span#userRtx= user.rtx 
+                span.gray (#{user.nick})
+                - var local = "localhost:3000"
+              //- p 重构角色
+              p
+                span#userRoles.gray
+                | [
+                a(href='http://www.oa.com/api/loginout.ashx?ref='+local) 退出
                 | ]
-              p 重构角色
+              //- p #{user.uid}
       div.content
         block content
 
@@ -44,6 +55,8 @@ html(lang="zh-CN")
 
     script(src="/js/jquery/jquery-1.10.2.min.js")
     script(src="/js/jquery/ui/jquery-ui-1.10.3.custom.min.js")
+    script(src="/js/app/comm/app-ajax.js")
+    //- script(src="/js/app/user/user.js")
     //- script(src="/js/jquery/jquery.ui.datepicker.js")
-    script(src="/js/comm.js")
+    //- script(src="/js/comm.js")
     block pageScript

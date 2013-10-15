@@ -17,6 +17,8 @@ app.configure(function(){
   app.set('view engine', 'jade');
   app.use(express.favicon());
   app.use(express.logger('dev'));
+  app.use(express.cookieParser());
+  app.use(express.cookieSession({key:'sid',secret:'alsdkjfl28DJJAS'}));
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(app.router);
@@ -47,11 +49,17 @@ if ('production' == app.get('env')) {
 Weekly.connect(app.get('mongourl'));
 
 // Routes Rule
+app.use(app.router);
+app.all('*', user.auth);
 app.get('/', routes.index);
+app.post('/comm-ajaxUpdateSet', routes.comm_ajaxUpdateSet);
+app.post('/comm-ajaxGetRoles', routes.comm_ajaxGetRoles);
+
 app.get('/task', routes.task);
 app.get('/task-rb', routes.task_rb);
 app.get('/task/create', routes.task_create);
 app.post('/task/created', routes.task_created);
+app.get('/task/search', routes.task_search);
 app.get('/task/:id', routes.task_detail);
 app.get('/task/del/:id', routes.task_del);
 app.get('/task/edit/:id', routes.task_edit);
@@ -59,9 +67,18 @@ app.post('/task/update/:id', routes.task_update);
 app.post('/task/ajaxUpdate', routes.task_ajaxUpdate);
 app.post('/task/ajaxUpdateCalendar', routes.calendar_ajaxUpdate);
 app.post('/task/callJSON', routes.task_callJSON);
+
 app.get('/export', routes.task_export);
 app.post('/excel', routes.excel);
-app.get('/users', user.list);
+
+app.get('/setting-project', routes.setting_project);
+app.post('/setting-project/created', routes.setting_project_created);
+app.get('/setting-project/del/:id', routes.setting_project_del);
+app.get('/setting-staff/create', routes.setting_staff_create);
+app.post('/setting-staff/create', routes.setting_staff_create);
+app.get('/setting-staff', routes.setting_staff);
+
+// app.get('/users', user.auth);
 app.use(function(req, res){
   res.send("Page Not Found.",404);
 });

@@ -16,8 +16,8 @@ block content
     .c-box-hd.task-list
       .c-box-hd-title
         h3 全部需求
-        form.search-form(action='')
-          input.inp-txt(type='text', placeholder='需求ID/名称')
+        form.search-form(action='/task/search')
+          input.inp-txt(type='text',name="q", placeholder='需求ID/名称')
           input.btn-search(type='submit', value='搜索')
       .c-box-hd-extra
         form.search-form(action='')
@@ -112,4 +112,5 @@ block pageScript
   script(src="/js/fullcalendar/fullcalendar.js")
 
   //- page javascript
-  script(src="/js/task.js")
+  script(src="/js/app/comm/m-table-data.js")
+  script(src="/js/app/task/task.js")

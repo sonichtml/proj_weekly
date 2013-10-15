@@ -1,7 +1,7 @@
 var mongoose = require('mongoose'),
 	Schema = mongoose.Schema;
 
-
+// 需求主表集合
 var WeeklySchema = new Schema({
 	author: {type: String, requierd: false},		//需求创建者
 	type: {type: String, requierd: true},			//所属项目
@@ -21,6 +21,22 @@ var WeeklySchema = new Schema({
 	progress: {type: String, requierd: false}		//需求总进度
 });
 
+// 项目表集合
+var ProjectSchema = new Schema({
+	name: {type: String, requierd: true},			//所属项目名
+	star: {type: Number, defaults: 1}				//项目星级
+});
+
+// 人员表集合
+var StaffSchema = new Schema({
+	name: {type: String, requierd: true},			//英文名
+	roles: {type:Number, defaults: 0},				//角色
+	project: {type:String},							//项目id
+	group: {type:Number, defaults: 0},				//组别
+	remark: {type: String, requierd: false},		//备注信息
+	create_date: {type:Date, requierd: true}		//创建时间
+});
+
 var opened = false;
 
 mongoose.connection.on('open', function(ref) {
@@ -32,6 +48,9 @@ mongoose.connection.on('error', function(err) {
 });
 
 exports.Weekly = mongoose.model('Weekly', WeeklySchema);
+exports.Project = mongoose.model('Project', ProjectSchema);
+exports.Staff = mongoose.model('Staff', StaffSchema);
+
 exports.connect = function(mongourl, options) {
 	if ('undefined' === typeof options) {
 		options = {
@@ -69,8 +88,9 @@ mongoose.Model.paginate = function(q, s, pageNumber, resultsPerPage, callback) {
   callback = callback || function(){};
   var skipFrom = (pageNumber * resultsPerPage) - resultsPerPage;
   var query = model.find(q).skip(skipFrom).limit(resultsPerPage);
-  if(s);
-  query = query.sort(s);
+  if(s){
+  	query = query.sort(s);
+  }
   query.exec(function(error, results) {
     if (error) {
       callback(error, null, null);

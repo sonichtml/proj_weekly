@@ -1,0 +1,100 @@
+extends layout
+block content
+  //-[c-box:搜索需求列表]
+  .c-box
+    .c-box-hd.task-list
+      .c-box-hd-title
+        h3 搜索结果
+        form.search-form(action='/task/search')
+          input.inp-txt(type='text', name="q", placeholder='需求ID/名称')
+          input.btn-search(type='submit', value='搜索')
+      .c-box-hd-extra
+        form.search-form(action='')
+          label(for='currentStatus') 筛选
+          select#currentStatus(class='task-filter-select',data-name='status',name='currentStatus')
+            option(value='status=', selected='selected') 当前状态筛选
+            option(value='status=0') 全部状态
+            option(value='status=0') 排期中
+            option(value='status=1') 重构中
+            option(value='status=2') 联调中
+            option(value='status=3') 已上线
+          select#taskPriority(class='task-filter-select',data-name='priority',name='currentPriority')
+            option(value='', selected='selected') 优先级别筛选
+            option(value='priority=') 全部级别
+            option(value='priority=0') P0
+            option(value='priority=1') P1
+            option(value='priority=2') P2
+            option(value='priority=3') P3
+    .c-box-bd
+      if docs.length
+        - var i = 1
+        table.m-table-data.rb-task-table
+          colgroup
+            col.c1
+            col.c2
+            col.c3
+            col.c4
+            col.c5
+            col.c6
+            col.c7
+            col.c8
+            col.c9
+            col.c10
+          thead
+            tr
+              th 需求ID
+              th 需求名称
+              th.tcenter 当前状态
+              th.tcenter 页面数
+              th.tcenter 开始时间
+              th.tcenter 完成时间
+              th.tcenter 进度
+              th.tcenter 网站人员
+              th.tcenter 接口人
+              th 其它说明
+          tbody
+            for weekly in docs
+              tr
+                td.readonly
+                  span(data-name="_id")= weekly._id
+                  [
+                  a(href='/task/del/#{weekly.id}') 删
+                  ]
+                td
+                  【
+                  = weekly.type
+                  】
+                  a(href="/task/#{weekly.id}",class="editable",data-name="title") #{weekly.title}
+                td.tcenter
+                  - var statusText = ["排期中", "重构中", "联调中", "已上线"];
+                  span.editable(data-name="status")= (weekly.status || weekly.status == 0) ? statusText[weekly.status] : 'N/A'
+                  input.editableval(data-name="status",type="hidden",value="#{weekly.status}")
+                td.tcenter
+                  span.editable(data-name="pages")= weekly.pages
+                td.tcenter
+                  span.editable(data-name="rb_star_date")= weekly.rb_star_date ? weekly.rb_star_date.toISOString().replace(/T/, '').replace(/\..+/, '').substr(0,10) : '请排期'
+                td.tcenter
+                  span.editable(data-name="rb_end_date")= weekly.rb_end_date ? weekly.rb_end_date.toISOString().replace(/T/, '').replace(/\..+/, '').substr(0,10) : '请排期'
+                td.tcenter
+                  span.editable(data-name="progress")= weekly.progress ? weekly.progress : 'N/A'
+                  span %
+                //- td.tcenter= weekly.online_date.toISOString()
+                td
+                  span.editable(data-name="pp")= weekly.pp
+                td
+                  span.editable(data-name="pm")= weekly.pm
+                td
+                  span.editable(data-name="pm")= weekly.pm
+      else
+        //- .empty-data -->
+        .empty-data
+          p 抱歉，暂时没有查询到相关需求。
+      //- include include/paginate
+  div.callback-msg#ajaxCallbackMsg hello      
+
+block pageScript
+  script(src="/js/jquery/jquery.json-2.4.js")
+
+  //- page javascript
+  script(src="/js/app/comm/m-table-data.js")
+  script(src="/js/app/task/task.js")

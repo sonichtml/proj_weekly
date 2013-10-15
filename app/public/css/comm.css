@@ -1,4 +1,5 @@
-@charset "utf-8";
+﻿@charset "utf-8";
+/*a*/
 html{color:#000;background:#fff;-webkit-text-size-adjust:none;}
 body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,textarea,p,blockquote,th,td,hr,button,article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section
 {margin:0;padding:0;}
@@ -103,10 +104,11 @@ body > .contnet{height: auto; min-height: 100%;}
 				        box-shadow:inset 0px 1px 0px #1b5a86;
 			}
 
-	.user-info{position: absolute;right:12px;top:16px;}
+	.user-info{position: absolute;right:12px;top:16px;min-width:200px;}
 		.user-info-avatar{float: left;width:36px;margin:0 10px 0 0;}
 		.user-info-avatar img{border-radius:2em;}
 		.user-info-txt{overflow: hidden;*zoom:1;}
+		.user-info-txt p span{padding-right:6px;}
 
 /*-- .content --*/
 .content{padding:12px 12px 70px 12px;}
@@ -124,18 +126,17 @@ body > .contnet{height: auto; min-height: 100%;}
 ---------------------------------------------------------------------------------------*/
 #calendar {width: 940px; /*width:90%;*/}
 .fc-event:link,.fc-event:visited,.fc-event:hover{color: #fff;}
-.callback-msg{position: fixed;top:0;left:0;height:1.5em;color: #fff;padding:0.5em; 1em;background-color: #ff0000;}
-.callback-msg{
-	visibility: hidden;
+.callback-msg{position: fixed;top:0;left:0;height:1.5em;color: #fff;padding:0.5em 1em;background-color: #ff0000;
+	-webkit-transition: all 0.5s;
+	-moz-transition: all 0.5s;
+	transition: all 0.5s;
 	opacity: 0;
-	-webkit-transition: all 1s;
-	-moz-transition: all 1s;
-	transition: all 1s;
 }
 .msg-show{
 	visibility: visible;
 	opacity: 1;
 }
+
 
 /*-- c-box --*/
 .c-box{margin-bottom:1em;}
@@ -227,7 +228,7 @@ body > .contnet{height: auto; min-height: 100%;}
 }
 
 /*-- m-input --*/
-.m-input{line-height: 16px;height: 16px;padding:4px;border:1px solid #ccc;width: 95%;
+.m-input{line-height: 16px;height: 16px;margin-right:4px;padding:4px;border:1px solid #ccc;width: 95%;
 	border-radius:4px;
 	/* css3 box-shadow */
 	-webkit-box-shadow:inset -1px 1px #eee;
@@ -452,13 +453,14 @@ body > .contnet{height: auto; min-height: 100%;}
 /* system-settings
 ---------------------------------------------------------------------------------------*/	
 .system-settings-box{}
+	.system-settings-box .m-page{text-align: left;}
 /*-- .role-settings-form --*/
 .role-settings-form{width: 580px;}
 	.role-settings-form li{position: relative;margin: 0 0 1em;padding-left:100px;}
 	.role-settings-form label{position: absolute;left:0px;top:0;width: 92px;text-align: right;line-height: 1.8em;}
 	.role-settings-form .inp-txt{}
 	.role-settings-form .m-btn{}
-
+	
 
 /*-- .staff-manage-table --*/
 .staff-manage-table{width: 780px;}
