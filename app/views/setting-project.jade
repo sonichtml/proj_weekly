@@ -1,0 +1,60 @@
+extends layout
+block content
+  //- c-box:系统设置-项目管理
+  .c-box
+    .c-box-hd
+      .c-box-hd-title
+        h3 系统设置
+      .c-box-hd-extra
+        a.m-btn.btn-skin-1(href='#') 返回需求列表
+    .c-box-bd
+      .m-tabs
+        .m-tabs-nav
+          ul.m-tabs-nav-ul
+            li
+              a(href='/setting-staff/create') 权限开通
+            li
+              a(href='/setting-staff') 人员管理
+            li.current
+              a(href='/setting-project') 项目管理
+          form.search-form(method='get',action='/setting-project')
+            input.inp-txt(name='projectName', type='text', placeholder='项目名称')
+            input.btn-search(type='submit', value='搜索')
+        .m-tabs-content
+          //- .system-settings-box
+          .system-settings-box
+            form#addProjectForm.add-project-form(method="post", action='/setting-project/created')
+              input.m-input.inp-txt(id="addProjectName", name="project[name]", type='text', placeholder='输入新增的项目名')
+              input.m-btn.btn-skin-1(type='submit', value='+新增项目')
+            if docs.length
+              table.m-table-data.project-manage-table(data-collection="Project")
+                colgroup
+                  col.c1
+                  col.c2
+                thead
+                  th 项目名称
+                  th 操作
+                tbody
+                  for project in docs
+                    tr
+                      td
+                        span(class="hidden",data-name="_id")= project._id
+                        span.editable(data-name="name")= project.name
+                        if project.star
+                          [ 
+                          #{project.star}
+                          ]
+                      td.tcenter
+                        a(href='/setting-project/del/#{project.id}') 删除
+            else
+              //- .empty-data -->
+              .empty-data
+                p 目前还未发布项目，请选新建项目
+            include include/paginate
+  div.callback-msg#ajaxCallbackMsg hello    
+
+
+block pageScript
+  //- page javascript
+  script(src="/js/app/comm/m-table-data.js")
+  script(src="/js/app/setting/setting.js")

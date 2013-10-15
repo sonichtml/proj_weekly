@@ -1,0 +1,95 @@
+extends layout
+block content
+  //- c-box:系统设置-人员管理
+  .c-box
+  .c-box-hd
+    .c-box-hd-title
+      h3 系统设置
+    .c-box-hd-extra
+      a.m-btn.btn-skin-1(href='#') 返回需求列表
+  .c-box-bd
+    .m-tabs
+      .m-tabs-nav
+        ul.m-tabs-nav-ul
+          li
+            a(href='/setting-staff/create') 权限开通
+          li.current
+            a(href='/setting-staff') 人员管理
+          li
+            a(href='/setting-project') 项目管理
+        form.search-form(method='get',action='/setting-staff')
+          input.inp-txt(name='staffName', type='text', placeholder='人员英文名')
+          input.btn-search(type='submit', value='搜索')
+      .m-tabs-content
+        .system-settings-box
+          div#staffRoleSelectBox.select-div
+            select.main-select(name='roles')
+              option(value='0', selected='selected') 请选择角色
+              option(value='1') 产品角色
+              option(value='2') 管理角色
+              option(value='3') 重构角色
+            select.sub-select.sub-select-project(class='hidden',name='project')
+              option(value='0') 请选择负责的产品
+              if pj_array.length
+                for pj in pj_array
+                  option(value='#{pj.id}')= pj.name
+            select.sub-select.sub-select-group(class='hidden',name='group')
+              option(value='0', selected='selected') 请选择组别
+              option(value='1') 重构1组
+              option(value='2') 重构2组
+              option(value='3') 重构3组
+            button.staff-role-change-button 确认修改
+
+          if docs.length
+            table.m-table-data.staff-manage-table(data-collection="Staff")
+              colgroup
+                col.c1
+                col.c2
+                col.c3
+                col.c4
+                col.c5
+              thead
+                tr
+                  th 人员名字
+                  th 角色
+                  th 备注
+                  th 开通时间
+                  th 操作
+              tbody
+                for staff in docs
+                  tr
+                    td.readonly
+                      span(class="hidden",data-name="_id")= staff._id
+                      span= staff.name
+                    - var rolesText = ["未定义","产品", "管理", "重构"];
+                    - var groupText = ["未定义","重构1组", "重构2组", "重构3组"];
+                    td.staffRoles
+                      span.editable(data-name="roles")= rolesText[staff.roles]
+                      span.editable(data-name="line") -
+                      //- span.editable(data-name="project")= (staff.roles == 1) ? pj_array[staff.project] : groupText[staff.group]
+                      if (staff.roles == 1)
+                        span.editable(data-name="project")= pj_array[staff.project]
+                        span.editable.hidden(data-name="group")= groupText[staff.group]
+                      else
+                        span.editable.hidden(data-name="project")= pj_array[staff.project]
+                        span.editable(data-name="group")= groupText[staff.group]
+                      input(type="hidden", data-name="roles", value="#{staff.roles}")
+                      input(type="hidden", data-name="project", value="#{staff.project}")
+                      input(type="hidden", data-name="group", value="#{staff.group}")
+                    td
+                      span.editable(data-name="remark")= staff.remark
+                    td.tcenter.readonly= staff.create_date ? staff.create_date.toISOString().replace(/T/, '').replace(/\..+/, '').substr(0,10) : 'N/A'
+                    td.tcenter.readonly
+                      a(href='#') 停用
+          else
+            //- .empty-data -->
+            .empty-data
+              p 您目前还未添加人员，可先 
+                a(href='/setting-staff/create') 添加人员
+  div.callback-msg#ajaxCallbackMsg hello 
+
+
+block pageScript
+  //- page javascript
+  script(src="/js/app/comm/m-table-data.js")
+  script(src="/js/app/setting/setting.js")

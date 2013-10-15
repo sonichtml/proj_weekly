@@ -36,10 +36,9 @@ block content
               td
                 select#taskTitle-1(name='type')
                   option(value='', selected='selected') 选择项目
-                  option(value='TGP') TGP
-                  option(value='TGA') TGA
-                  option(value='lol') 英雄联盟
-                  option(value='speed') QQ飞车
+                  if pj.length
+                    for project in pj
+                      option(value='#{project.name}')= project.name
               td
                 input.m-input.inp-txt(type='text',name='title', placeholder='需求标题这里')
               td
@@ -67,13 +66,17 @@ block content
                 input.m-input.inp-txt.date-picker(type='text', name='online_date', placeholder='0000-00-00')
             //- 插入多一行数据的tr模板
             tr#insertTr.hidden
+              - console.log(pj);
               td
                 select#taskTitle-nnn(name='type')
                   option(value='', selected='selected') 选择项目
-                  option(value='TGP') TGP
-                  option(value='TGA') TGA
-                  option(value='lol') 英雄联盟
-                  option(value='speed') QQ飞车
+                  if pj.length
+                    for project in pj
+                      option(value='#{project.name}')= project.name
+                  //- option(value='TGP') TGP
+                  //- option(value='TGA') TGA
+                  //- option(value='lol') 英雄联盟
+                  //- option(value='speed') QQ飞车
               td
                 input.m-input.inp-txt(type='text',name='title', placeholder='需求标题这里')
               td
@@ -121,6 +124,9 @@ block pageScript
         //- $.getScript('/js/jquery/jquery-ui.min.js', function(){
         //-   $('.date-picker').datepicker({ dateFormat: "yy-mm-dd" });
         //- });
+        //- current nav 
+        $(".nav-ul li").eq(1).addClass("current");
+
         $('.date-picker').datepicker({ dateFormat: "yy-mm-dd" });
 
         //- Setting the value of checkbox to true or false

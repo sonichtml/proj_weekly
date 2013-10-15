@@ -300,6 +300,17 @@ exports.passport = function(ticket, cb) {
         m = res.match(/<StaffId>([^<]+)<\/StaffId>/);
         info.uid = m? decode(m[1]) : '0';
 
+        // 从staff Collection 里把RTX名的角色取出来
+        /*
+        Staff.find({name:info.rtx}).limit(1).exec(function(err,docs){
+          if(err){
+            console.log(err)
+          }else{
+            console.log(docs);
+          }
+        });*/
+       
+
         cb(info.uid ? info : undefined);
 
       } else {

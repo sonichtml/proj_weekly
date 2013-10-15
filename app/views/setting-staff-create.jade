@@ -1,0 +1,55 @@
+extends layout
+block content
+  //- c-box:系统设置-增加人员权限
+  .c-box
+    .c-box-hd
+      .c-box-hd-title
+        h3 系统设置
+      .c-box-hd-extra
+        a.m-btn.btn-skin-1(href='#') 返回需求列表
+    .c-box-bd
+      .m-tabs
+        .m-tabs-nav
+          ul.m-tabs-nav-ul
+            li.current
+              a(href='/setting-staff/create') 权限开通
+            li
+              a(href='/setting-staff') 人员管理
+            li
+              a(href='/setting-project') 项目管理
+        .m-tabs-content
+          //- .system-settings-box
+          .system-settings-box
+            form(method="post", action='/setting-staff/create')
+              ul.role-settings-form
+                li
+                  label(for='staffName') 英文名：
+                  input#staffName.m-input.inp-txt(name='staff[name]', type='text')
+                  input(name="staff[create_date]",type="hidden",value="#{Date()}")
+                li
+                  label(for='staffRoles') 角色：
+                  div.select-div
+                    select.main-select(name='staff[roles]')
+                      option(value='1', selected='selected') 产品角色
+                      option(value='2') 管理角色
+                      option(value='3') 重构角色
+                    select.sub-select.sub-select-project(name='staff[project]')
+                      option(value='0') 请选择负责的产品
+                      if pj.length
+                        for project in pj
+                          option(value='#{project._id}')= project.name
+                    select.sub-select.sub-select-group.hidden(name='staff[group]')
+                      option(value='0', selected='selected') 请选择组别
+                      option(value='1') 重构1组
+                      option(value='2') 重构2组
+                      option(value='3') 重构3组
+                li
+                  label(for='staffRemark') 备注：
+                  textarea#staffRemark.m-input.inp-textarea(name='staff[remark]', rows='4', cols='20')
+                li.btn
+                  input.m-btn.btn-skin-1(type='submit', value='确认开通')
+
+
+block pageScript
+  //- page javascript
+  script(src="/js/app/setting/setting.js")
